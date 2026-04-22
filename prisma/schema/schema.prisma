@@ -5,19 +5,11 @@
 
 generator client {
   provider = "prisma-client"
-  output   = "../src/generated/prisma"
+  output   = "../../src/generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
 }
 
-model Category {
-  id   String @id @default(uuid())
-  name String @unique 
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@map("categories")
-}
