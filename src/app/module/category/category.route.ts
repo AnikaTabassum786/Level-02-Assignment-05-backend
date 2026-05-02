@@ -1,0 +1,13 @@
+import express,{Router} from 'express'
+import { categoryController } from "./category.controller"
+import auth, { Role } from '../../../middlewares/auth'
+
+
+
+const router = express.Router()
+
+router.post("/",auth(Role.ADMIN),categoryController.createCategory)
+router.get("/",categoryController.getAllCategory)
+
+
+export const categoryRouter:Router = router
