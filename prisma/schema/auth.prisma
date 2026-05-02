@@ -1,20 +1,24 @@
-
 model User {
-  id            String    @id
+  id            String  @id
   name          String
   email         String
-  emailVerified Boolean   @default(false)
+  emailVerified Boolean @default(false)
   image         String?
 
-  role          Role       @default(CUSTOMER)
-  needPasswordChange Boolean @default(false)
-  isDeleted     Boolean     @default(false)
-  deletedAt     DateTime?
+  isBanned Boolean @default(false)
 
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  sessions      Session[]
-  accounts      Account[]
+  role               Role      @default(CUSTOMER)
+  needPasswordChange Boolean   @default(false)
+  isDeleted          Boolean   @default(false)
+  deletedAt          DateTime?
+
+  //Relation
+  medicines Medicine[] @relation("SellerMedicines")
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  sessions  Session[]
+  accounts  Account[]
 
   @@unique([email])
   @@map("user")

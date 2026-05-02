@@ -1,0 +1,28 @@
+model Medicine {
+  id           String  @id @default(uuid())
+  name         String
+  description  String
+  price        Decimal @db.Decimal(10, 2)
+  stock        Int
+  manufacturer String
+  imageURL     String?
+
+  //  Relation
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  sellerId String
+  seller   User   @relation("SellerMedicines", fields: [sellerId], references: [id], onDelete: Cascade)
+
+//   reviews    Review[]
+//   orderItems OrderItem[]
+//   cartItems  CartItem[]  
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([categoryId])
+  @@index([sellerId])
+  @@index([name])
+  @@map("medicines")
+}
