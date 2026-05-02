@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { categoryService } from "./category.service";
 
+
 const createCategory = async (req: Request, res: Response) => {
   try {
     const result = await categoryService.createCategory(req.body);
@@ -37,9 +38,29 @@ const getAllCategory = async(req:Request,res:Response)=>{
   }
 }
 
+const deleteCategory= async(req:Request,res:Response)=>{
+ try{
+   const {categoryId} = req.params;
 
+   const result = await categoryService.deleteCategory(categoryId as string)
+
+   res.status(200).json({
+    success:true,
+    message:"Category delete successfully",
+    data:result
+   })
+ }
+ catch(error){
+  res.status(400).json({
+      success: false,
+      message: "Category creation failed",
+      error,
+    });
+  }
+}
 
 export const categoryController = {
   createCategory,
-  getAllCategory
+  getAllCategory,
+  deleteCategory
 };
