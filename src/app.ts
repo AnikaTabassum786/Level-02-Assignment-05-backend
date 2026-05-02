@@ -1,35 +1,18 @@
 import express,{ Application, Request, Response } from "express";
-
+import { toNodeHandler } from "better-auth/node";
+import { auth } from "./app/lib/auth";
 
 
 const app:Application = express()
 
+// app.use(express.urlencoded({ extended: true }));
 
-// Enable URL-encoded form data parsing
-app.use(express.urlencoded({ extended: true }));
-
-// Middleware to parse JSON bodies
+app.all("/api/auth/*splat", toNodeHandler(auth));
 app.use(express.json());
 
 
-
-// Basic route
-// app.get('/', async (req: Request, res: Response) => {
-//   const specialty = await prisma.specialty.create({
-//     data:{
-//       title:'Cardiology'
-//     }
-//   })
-
-//   res.status(201).json({
-//     success:true,
-//     message:'API is working',
-//     data: specialty
-//   })
-// });
-
 app.get('/', (req: Request, res: Response) => {
-  res.send('Hello, TypeScript + Express!');
+  res.send('Hello This is Assignment 05');
 });
 
 export default app

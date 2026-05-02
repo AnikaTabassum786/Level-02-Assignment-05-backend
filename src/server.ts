@@ -21,11 +21,13 @@
 
 
 import app from "./app"
+import { prisma } from "./app/lib/prisma";
 
 
 
-const bootstrap = ()=>{
+async function main(){
     try{
+        await prisma.$connect();
    app.listen(5000,()=>{
     console.log(`Server is running on http://localhost:5000`)
    })
@@ -35,4 +37,4 @@ const bootstrap = ()=>{
     }
 }
 
-bootstrap()
+main()
