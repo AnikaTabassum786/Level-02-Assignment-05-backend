@@ -40,7 +40,7 @@ const createMedicine = async (req: Request, res: Response) => {
 const getAllMedicines= async(req: Request, res: Response)=>{
 try{
 const result = await medicineService.getAllMedicines(req.query)
- res.status(201).json({
+ res.status(200).json({
             success: true,
             message: "Medicine Created Successfully",
             data: result,
@@ -54,7 +54,27 @@ const result = await medicineService.getAllMedicines(req.query)
     }
 }
 
+const getMedicineById=async(req: Request, res: Response)=>{
+  try{
+  const {medicineId} = req.params
+  const result = await medicineService.getMedicineById(medicineId as string)
+
+   res.status(200).json({
+            success: true,
+            message: "Medicine Fetched Successfully",
+            data: result,
+        });
+  }
+  catch (e: any) {
+        res.status(400).json({
+            error: "Medicine Fetched Failed",
+            details: e.message || String(e),
+        });
+    }
+}
+
 export const medicineController={
     createMedicine,
-    getAllMedicines
+    getAllMedicines,
+    getMedicineById
 }
