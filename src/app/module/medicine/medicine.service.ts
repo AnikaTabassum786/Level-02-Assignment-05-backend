@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { prisma } from "../../lib/prisma";
 
 const createMedicine = async (data: {
@@ -26,6 +28,19 @@ const createMedicine = async (data: {
     return result
 }
 
+const getAllMedicines = async (query:any)=>{
+   const result = await prisma.medicine.findMany({
+    orderBy:{
+        createdAt:'desc'
+    }
+   })
+
+   return result
+}
+
+
+
 export const medicineService = {
-    createMedicine
+    createMedicine,
+    getAllMedicines
 }

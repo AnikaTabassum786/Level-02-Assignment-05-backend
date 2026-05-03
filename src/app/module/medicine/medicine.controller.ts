@@ -37,6 +37,24 @@ const createMedicine = async (req: Request, res: Response) => {
 
 }
 
+const getAllMedicines= async(req: Request, res: Response)=>{
+try{
+const result = await medicineService.getAllMedicines(req.query)
+ res.status(201).json({
+            success: true,
+            message: "Medicine Created Successfully",
+            data: result,
+        });
+}
+  catch (e: any) {
+        res.status(400).json({
+            error: "Medicine Creation Failed",
+            details: e.message || String(e),
+        });
+    }
+}
+
 export const medicineController={
-    createMedicine
+    createMedicine,
+    getAllMedicines
 }
