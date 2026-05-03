@@ -73,8 +73,29 @@ const getMedicineById=async(req: Request, res: Response)=>{
     }
 }
 
+const updateMedicineById=async(req: Request, res: Response)=>{
+ try{
+  const {medicineId} = req.params;
+  const user = req.user;
+  const data = {...req.body}
+ const updateMedicine = await medicineService.updateMedicineById(medicineId as string, user?.id as string, data)
+  res.status(200).json({
+            success: true,
+            message: "Medicine Fetched Successfully",
+            data: updateMedicine
+        });
+ }
+  catch (e: any) {
+        res.status(400).json({
+            error: "Medicine Fetched Failed",
+            details: e.message || String(e),
+        });
+    }
+}
+
 export const medicineController={
     createMedicine,
     getAllMedicines,
-    getMedicineById
+    getMedicineById,
+    updateMedicineById
 }

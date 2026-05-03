@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { Medicine } from "../../../generated/prisma/client";
 import { prisma } from "../../lib/prisma";
 
 const createMedicine = async (data: {
@@ -56,10 +57,35 @@ const getMedicineById= async(medicineId : string)=>{
   return result
 }
 
+const updateMedicineById=async(medicineId:string, sellerId:string, data:Partial<Medicine>)=>{
+
+  const existing = await prisma.medicine.findFirst({
+    where:{
+        id:medicineId,
+        sellerId:sellerId
+    }
+  })
+
+  if(!existing){
+     throw new Error("Not authorized or medicine not found")
+  }
+  
+  const result = await prisma.medicine.update({
+    where:{
+        id:medicineId
+    },
+    data
+  })
+
+  return result
+
+}
+
 
 
 export const medicineService = {
     createMedicine,
     getAllMedicines,
-    getMedicineById
+    getMedicineById,
+    updateMedicineById
 }
