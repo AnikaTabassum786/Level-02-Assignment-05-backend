@@ -81,11 +81,30 @@ const updateMedicineById=async(req: Request, res: Response)=>{
  const updateMedicine = await medicineService.updateMedicineById(medicineId as string, user?.id as string, data)
   res.status(200).json({
             success: true,
-            message: "Medicine Fetched Successfully",
+            message: "Medicine Update Successfully",
             data: updateMedicine
         });
  }
   catch (e: any) {
+        res.status(400).json({
+            error: "Medicine Update Failed",
+            details: e.message || String(e),
+        });
+    }
+}
+
+const deleteMedicine=async(req: Request, res: Response)=>{
+ try{
+    const {medicineId} = req.params;
+    const deleteMedicine = await medicineService.deleteMedicine(medicineId as string)
+     res.status(200).json({
+            success: true,
+            message: "Medicine Deleted Successfully",
+            data: deleteMedicine
+        });
+ 
+ }
+   catch (e: any) {
         res.status(400).json({
             error: "Medicine Fetched Failed",
             details: e.message || String(e),
@@ -97,5 +116,6 @@ export const medicineController={
     createMedicine,
     getAllMedicines,
     getMedicineById,
-    updateMedicineById
+    updateMedicineById,
+    deleteMedicine
 }
