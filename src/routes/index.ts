@@ -1,11 +1,11 @@
-import { Router } from "express";
-import { AuthRoutes } from "../app/module/auth/auth.route";
+// import { Router } from "express";
+// import { AuthRoutes } from "../app/module/auth/auth.route";
 
 
-const router = Router();
+// const router = Router();
 
 
-router.use('/auth',AuthRoutes)
+// router.use('/auth',AuthRoutes)
 
-export const IndexRoutes = router;
+// export const IndexRoutes = router;
 

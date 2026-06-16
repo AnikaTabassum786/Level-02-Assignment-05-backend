@@ -8,4 +8,5 @@ const router = express.Router()
 
 router.get("/",auth(Role.ADMIN),adminController.getAllUsers)
 
+
 export const adminRouter:Router = router
