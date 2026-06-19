@@ -7,6 +7,7 @@ import { adminController } from './admin.controller'
 const router = express.Router()
 
 router.get("/",auth(Role.ADMIN),adminController.getAllUsers)
+router.patch("/:userId",auth(Role.ADMIN),adminController.toggleBanUser)
 
 
 export const adminRouter:Router = router
