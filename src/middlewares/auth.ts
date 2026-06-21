@@ -27,17 +27,23 @@ declare global {
 const auth = (...roles: Role[]) => {
     return async (req: Request, res: Response, next: NextFunction) => {
         //   console.log(roles)
+
+        //Has the user logged in?Is there a cookie or token?
         const session = await betterAuth.api.getSession({
+
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             headers: req.headers as any
         })
 
+        //If the user does not log in
         if (!session) {
             return res.status(401).json({
                 success: false,
                 message: "You are not authorized"
             })
         }
+
+        //From now on, `req.user` will be available in the controller.User information can be used easily.
         req.user = {
             id: session.user.id,
             email: session.user.email,
@@ -46,6 +52,7 @@ const auth = (...roles: Role[]) => {
             emailVerified: session.user.emailVerified
         }
 
+        //Role check
         if (roles.length && !roles.includes(req.user.role as Role)) {
             return res.status(403).json({
                 success: false,
@@ -53,10 +60,12 @@ const auth = (...roles: Role[]) => {
             })
         }
 
+        //Check for banned users in the database.
         const user = await prisma.user.findUnique({
             where: { id: session.user.id },
         });
 
+        //If the user does not exist. Or is banned. It will block them.
         if (!user || user.isBanned) {
             return res.status(403).json({
                 success: false,

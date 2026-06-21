@@ -112,28 +112,36 @@ export const auth = betterAuth({
 
   //  BLOCK BANNED / DELETED USERS BEFORE LOGIN
   hooks: {
+
+    //This function will execute before someone attempts to log in.
+
     before: createAuthMiddleware(async (ctx) => {
-      // Only apply for email login
+
+      // Only apply for email login.If it is not an email login,then do nothing and exit.
       if (ctx.path !== "/sign-in/email") return;
 
-      const email = ctx.body?.email;
+      //The email address the user is using to log in is being captured.
+      const email = ctx.body?.email; 
 
+      //They won't do anything if there is no email.
       if (!email) return;
 
+      //It is checking whether this email exists in the user database.
       const user = await prisma.user.findUnique({
         where: { email },
       });
 
+      //If there is no user, it will leave without doing anything.
       if (!user) return;
 
-      //  banned user
+      //  If a user is banned, Login is completely disabled. It will return the error: “Your account has been banned”
       if (user.isBanned) {
         throw new APIError("FORBIDDEN", {
           message: "Your account has been banned",
         });
       }
 
-      //  deleted user
+      //  If the account has been deleted, it won't let you log in, it will show an error.
       if (user.isDeleted) {
         throw new APIError("FORBIDDEN", {
           message: "Your account has been deleted",
