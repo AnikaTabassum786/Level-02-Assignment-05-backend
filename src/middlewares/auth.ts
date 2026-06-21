@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 import { auth as betterAuth } from '../app/lib/auth'
 import { NextFunction, Request, Response } from "express";
+import { prisma } from '../app/lib/prisma';
 
 
 export enum Role {
@@ -51,6 +52,18 @@ const auth = (...roles: Role[]) => {
                 message: "Forbidden! You don't have permission to access this resources!"
             })
         }
+
+        const user = await prisma.user.findUnique({
+            where: { id: session.user.id },
+        });
+
+        if (!user || user.isBanned) {
+            return res.status(403).json({
+                success: false,
+                message: "Account blocked",
+            });
+        }
+
         next()
 
         console.log(session)
