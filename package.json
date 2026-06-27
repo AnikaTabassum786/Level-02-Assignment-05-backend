@@ -11,6 +11,7 @@
     "start": "node dist/server.js",
     "build": "tsc",
     "dev": "tsx watch src/server.ts",
+    "seed:admin": "npx tsx src/utils/seedAdmin.ts",
     "lint": "eslint ./src/**/*"
   },
   "dependencies": {
