@@ -19,8 +19,9 @@ credentials: true
 
 app.all("/api/auth/*splat", toNodeHandler(auth));
 app.use(express.json());
+app.use(express.urlencoded({extended:true}))
 
-app.use("/api/categories",categoryRouter)
+app.use("/api/all-categories",categoryRouter)
 app.use("/api/medicines",medicineRouter)
 app.use("/api/users",adminRouter)
 

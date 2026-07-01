@@ -10,13 +10,12 @@ const createMedicine = async (req: Request, res: Response) => {
         if (!user?.id) {
             throw new Error("Unauthorized")
         }
-
         const result = await medicineService.createMedicine(
             {
                 ...req.body,
                 price: Number(req.body.price),
                 stock: Number(req.body.stock),
-
+               imageURL:req.file?.path
             },
             user.id
         );
@@ -24,6 +23,7 @@ const createMedicine = async (req: Request, res: Response) => {
             success: true,
             message: "Medicine Created Successfully",
             data: result,
+        
         });
 
     }
