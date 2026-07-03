@@ -5,6 +5,7 @@ import cors from 'cors'
 import { categoryRouter } from "./app/module/category/category.route";
 import { medicineRouter } from "./app/module/medicine/medicine.route";
 import { adminRouter } from "./app/module/admin/admin.route";
+import { cartRouter } from "./app/module/cart/cart.route";
 
 
 const app:Application = express()
@@ -30,6 +31,7 @@ app.use(express.urlencoded({extended:true}))
 app.use("/api/all-categories",categoryRouter)
 app.use("/api/medicines",medicineRouter)
 app.use("/api/users",adminRouter)
+app.use("/api/cart",cartRouter)
 
 
 app.get('/', (req: Request, res: Response) => {
