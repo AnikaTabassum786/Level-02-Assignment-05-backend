@@ -15,7 +15,9 @@ const createMedicine = async (req: Request, res: Response) => {
                 ...req.body,
                 price: Number(req.body.price),
                 stock: Number(req.body.stock),
-               imageURL:req.file?.path
+                imageURL:req.file?.path,  //imageURL is for displaying images in the browser.
+                imagePublicId: req.file?.filename,//imagePublicId is the unique ID within Cloudinary.Cloudinary uses this ID to determine which image needs to be deleted.
+              
             },
             user.id
         );

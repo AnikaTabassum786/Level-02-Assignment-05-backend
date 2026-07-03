@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { deleteFromCloudinary } from "../../../config/cloudinary.config";
 import { Medicine } from "../../../generated/prisma/client";
 import { prisma } from "../../lib/prisma";
 
@@ -11,6 +12,7 @@ const createMedicine = async (data: {
     manufacturer: string;
     imageURL?: string;
     categoryId: string;
+    imagePublicId?: string;
 },
     sellerId: string
 ) => {
@@ -81,15 +83,42 @@ const updateMedicineById=async(medicineId:string, sellerId:string, data:Partial<
 
 }
 
-const deleteMedicine= async(medicineId : string)=>{
-  const result = await prisma.medicine.delete({
-    where:{
-        id:medicineId
-    }
-  })
+// const deleteMedicine= async(medicineId : string)=>{
+//   const result = await prisma.medicine.delete({
+//     where:{
+//         id:medicineId
+//     }
+//   })
 
-  return result
-}
+//   return result
+// }
+
+const deleteMedicine = async (medicineId: string) => {
+  //  First Find the medicine 
+  const medicine = await prisma.medicine.findUnique({
+    where: {
+      id: medicineId,
+    },
+  });
+
+  if (!medicine) {
+    throw new Error("Medicine not found");
+  }
+
+  //  Delete image from Cloudinary if it exists
+  if (medicine.imagePublicId) {
+    await deleteFromCloudinary(medicine.imagePublicId);
+  }
+
+  //  Delete medicine from database
+  const result = await prisma.medicine.delete({
+    where: {
+      id: medicineId,
+    },
+  });
+
+  return result;
+};
 
 export const medicineService = {
     createMedicine,

@@ -6,6 +6,7 @@ model Medicine {
   stock        Int
   manufacturer String
   imageURL     String?
+  imagePublicId String?
 
   //  Relation
   categoryId String
