@@ -11,6 +11,12 @@ const app:Application = express()
 
 // app.use(express.urlencoded({ extended: true }));
 
+app.post("/webhook",express.raw({type:"application/json"}),async(req:Request,res:Response)=>{
+  console.log("Webhook received:",req.body);
+  res.status(200).json({received:true})
+})
+
+
 app.use(cors({
 // origin:process.env.APP_URL || "http://localhost:3000",
 origin:process.env.APP_URL,

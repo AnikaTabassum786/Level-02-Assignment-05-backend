@@ -12,7 +12,8 @@
     "build": "tsc",
     "dev": "tsx watch src/server.ts",
     "seed:admin": "npx tsx src/utils/seedAdmin.ts",
-    "lint": "eslint ./src/**/*"
+    "lint": "eslint ./src/**/*",
+    "stripe:webhook":"stripe listen --forward-to localhost:5000/webhook"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.7.0",
@@ -25,6 +26,7 @@
     "multer": "^2.2.0",
     "multer-storage-cloudinary": "^4.0.0",
     "pg": "^8.20.0",
+    "stripe": "^22.3.0",
     "tsx": "^4.21.0"
   },
   "devDependencies": {
