@@ -86,6 +86,72 @@ const createCart = async (
   });
 };
 
+//Here, `customerId` is taken as a parameter; this means the ID of the customer whose cart you want to view will be passed here.
+
+const getAllOwnCart = async(userId:string)=>{
+    const cart = await prisma.cart.findUnique({  //Find the Cart whose customerId matches this ID.
+       where:{customerId:userId},
+       include:{
+        cartItems:{
+          include:{
+            medicine:true
+          }
+        }
+       }
+    })
+
+    if(!cart){
+      return{
+        Items:[],
+        totalPrice:0
+      }
+    }
+
+
+    //reduce() iterates through each item and accumulates the total.
+    const totalPrice = cart.cartItems.reduce((total,item)=>{
+      return total+item.quantity * (item.medicine.price).toNumber()
+    },0)
+
+    return {
+      items:cart.cartItems,
+      totalPrice
+    }
+  
+}
+
+const deleteCart = async (cartItemId: string, userId: string) => {
+
+  
+//do not deleting the cart.
+// deleting an item from the cart.
+
+  const item = await prisma.cartItem.findUnique({
+    where: { id: cartItemId },
+    include: { cart: true, medicine: true },
+  });
+
+  if (!item) throw new Error("Cart item not found");
+
+  if (item.cart.customerId !== userId) {
+    throw new Error("Unauthorized");
+  }
+
+  // restore stock
+  await prisma.medicine.update({
+    where: { id: item.medicineId },
+    data: {
+      stock: item.medicine.stock + item.quantity,
+    },
+  });
+
+  return await prisma.cartItem.delete({
+    where: { id: cartItemId },
+  });
+};
+
 export const cartService = {
   createCart,
+  getAllOwnCart,
+  deleteCart
 };
