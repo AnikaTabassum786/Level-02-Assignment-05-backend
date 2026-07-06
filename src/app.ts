@@ -6,16 +6,24 @@ import { categoryRouter } from "./app/module/category/category.route";
 import { medicineRouter } from "./app/module/medicine/medicine.route";
 import { adminRouter } from "./app/module/admin/admin.route";
 import { cartRouter } from "./app/module/cart/cart.route";
+import { paymentRoutes } from "./app/module/payment/payment.route";
+
 
 
 const app:Application = express()
 
 // app.use(express.urlencoded({ extended: true }));
 
-app.post("/webhook",express.raw({type:"application/json"}),async(req:Request,res:Response)=>{
-  console.log("Webhook received:",req.body);
-  res.status(200).json({received:true})
-})
+// app.post("/webhook",express.raw({type:"application/json"}),async(req:Request,res:Response)=>{
+//   console.log("Webhook received:",req.body);
+//   res.status(200).json({received:true})
+// })
+
+app.use(
+  "/api/payment/webhook",
+  express.raw({ type: "application/json" })
+);
+
 
 
 app.use(cors({
@@ -32,6 +40,7 @@ app.use("/api/all-categories",categoryRouter)
 app.use("/api/medicines",medicineRouter)
 app.use("/api/users",adminRouter)
 app.use("/api/cart",cartRouter)
+app.use("/api/payment", paymentRoutes);
 
 
 app.get('/', (req: Request, res: Response) => {

@@ -138,12 +138,12 @@ const deleteCart = async (cartItemId: string, userId: string) => {
   }
 
   // restore stock
-  await prisma.medicine.update({
-    where: { id: item.medicineId },
-    data: {
-      stock: item.medicine.stock + item.quantity,
-    },
-  });
+  // await prisma.medicine.update({
+  //   where: { id: item.medicineId },
+  //   data: {
+  //     stock: item.medicine.stock + item.quantity,
+  //   },
+  // });
 
   return await prisma.cartItem.delete({
     where: { id: cartItemId },
