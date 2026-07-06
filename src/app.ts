@@ -19,11 +19,12 @@ const app:Application = express()
 //   res.status(200).json({received:true})
 // })
 
+//express.raw() ->When Stripe sends a notification about a successful or failed payment, it sends the raw body.
+// The raw body is required to verify the Stripe signature.
 app.use(
   "/api/payment/webhook",
   express.raw({ type: "application/json" })
 );
-
 
 
 app.use(cors({

@@ -27,6 +27,10 @@ const createCheckoutSession = async (
     throw new Error("Cart is empty");
   }
 
+
+  //Stripe requires its own product structure.
+  //That is why I am converting the cart items into the Stripe format.
+
   const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] =
     cart.cartItems.map((item) => ({
       quantity: item.quantity,
@@ -46,18 +50,18 @@ const createCheckoutSession = async (
     }));
 
   const session =
-    await stripe.checkout.sessions.create({
-      mode: "payment",
+    await stripe.checkout.sessions.create({  //A Stripe payment page is being created here.
+      mode: "payment",                       //Meaning, a one-time payment.
 
-      payment_method_types: ["card"],
+      payment_method_types: ["card"],     //Card payments are being accepted.
 
-      line_items: lineItems,
+      line_items: lineItems, //All products are being sent to Stripe.
 
       success_url:
-        `${process.env.APP_URL}/payment-success?session_id={CHECKOUT_SESSION_ID}`,
+        `${process.env.APP_URL}/payment-success?session_id={CHECKOUT_SESSION_ID}`,  //Upon successful payment, the user will be directed here
 
       cancel_url:
-        `${process.env.APP_URL}/checkout`,
+        `${process.env.APP_URL}/checkout`, //Canceling the payment will return you to the checkout page.
 
       metadata: {
         userId,

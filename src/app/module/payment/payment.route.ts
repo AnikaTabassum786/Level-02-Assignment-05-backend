@@ -17,8 +17,6 @@ router.post(
   paymentController.stripeWebhook
 );
 
-router.get("/test", (req, res) => {
-  res.send("Payment router is working");
-});
+
 
 export const paymentRoutes = router;
